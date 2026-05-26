@@ -1,0 +1,1556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Brit Market - Turn Your Ideas to Reality</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        :root {
+            --primary: #232f3e; --secondary: #febd69; --accent: #007185;
+            --light: #f3f3f3; --dark: #131921; --success: #067d62; --danger: #b12704;
+        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #eaeded; min-height: 100vh; }
+        .header {
+            background: var(--dark); color: white; padding: 10px 20px;
+            display: flex; align-items: center; justify-content: space-between;
+            position: fixed; width: 100%; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        .logo-section { display: flex; align-items: center; gap: 15px; }
+        .blue-star {
+            font-size: 28px; color: #00a8e8; cursor: pointer; transition: transform 0.3s;
+            text-shadow: 0 0 10px rgba(0,168,232,0.5);
+        }
+        .blue-star:hover { transform: scale(1.2) rotate(72deg); }
+        .red-star {
+            font-size: 24px; color: #ff4444; cursor: pointer; transition: transform 0.3s; margin-left: 10px;
+        }
+        .red-star:hover { transform: scale(1.2); }
+        .brand { font-size: 26px; font-weight: bold; color: white; text-decoration: none; cursor: pointer; }
+        .brand span { color: var(--secondary); }
+        .search-bar { flex: 1; max-width: 600px; margin: 0 20px; display: flex; }
+        .search-bar input { flex: 1; padding: 10px 15px; border: none; border-radius: 4px 0 0 4px; font-size: 14px; }
+        .search-bar button { background: var(--secondary); border: none; padding: 10px 15px; border-radius: 0 4px 4px 0; cursor: pointer; color: var(--dark); }
+        .nav-links { display: flex; gap: 20px; align-items: center; }
+        .nav-links a { color: white; text-decoration: none; font-size: 14px; display: flex; flex-direction: column; align-items: center; cursor: pointer; }
+        .nav-links a small { font-size: 12px; color: #ccc; }
+        .blue-star-menu {
+            position: fixed; top: 60px; left: 20px; background: white; border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3); width: 300px; display: none; z-index: 1001; overflow: hidden;
+        }
+        .blue-star-menu.active { display: block; animation: slideDown 0.3s ease; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .menu-header { background: linear-gradient(135deg, #00a8e8, #0077b6); color: white; padding: 15px; font-weight: bold; font-size: 18px; }
+        .menu-item { padding: 12px 15px; border-bottom: 1px solid #eee; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; gap: 10px; }
+        .menu-item:hover { background: #f0f8ff; }
+        .menu-item i { width: 20px; color: var(--accent); }
+        .sub-menu { display: none; background: #f9f9f9; }
+        .sub-menu.active { display: block; }
+        .sub-menu .menu-item { padding-left: 40px; font-size: 14px; }
+        .main-content { margin-top: 60px; min-height: calc(100vh - 60px); }
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--dark) 100%);
+            color: white; padding: 60px 20px; text-align: center;
+        }
+        .hero h1 { font-size: 42px; margin-bottom: 20px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .hero p { font-size: 18px; margin-bottom: 30px; max-width: 700px; margin-left: auto; margin-right: auto; line-height: 1.6; }
+        .hero-buttons { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
+        .btn { padding: 12px 30px; border-radius: 4px; text-decoration: none; font-weight: bold; cursor: pointer; border: none; font-size: 16px; transition: all 0.3s; display: inline-block; }
+        .btn-primary { background: var(--secondary); color: var(--dark); }
+        .btn-primary:hover { background: #f3a847; transform: translateY(-2px); }
+        .btn-secondary { background: transparent; color: white; border: 2px solid white; }
+        .btn-secondary:hover { background: white; color: var(--dark); }
+        .btn-success { background: var(--success); color: white; }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-accent { background: var(--accent); color: white; }
+        .categories { padding: 40px 20px; max-width: 1400px; margin: 0 auto; }
+        .section-title { font-size: 28px; margin-bottom: 25px; color: var(--primary); display: flex; align-items: center; gap: 10px; }
+        .category-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .category-card {
+            background: white; border-radius: 8px; padding: 25px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s; cursor: pointer; position: relative; overflow: hidden;
+        }
+        .category-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
+        .category-card.locked::after {
+            content: '\f023'; font-family: 'Font Awesome 6 Free'; font-weight: 900;
+            position: absolute; top: 15px; right: 15px; color: var(--danger); font-size: 20px;
+        }
+        .category-icon { font-size: 40px; margin-bottom: 15px; color: var(--accent); }
+        .category-card h3 { font-size: 18px; margin-bottom: 10px; color: var(--primary); }
+        .category-card p { color: #666; font-size: 14px; line-height: 1.5; }
+        .price-tag { display: inline-block; background: var(--secondary); color: var(--dark); padding: 5px 12px; border-radius: 20px; font-weight: bold; font-size: 14px; margin-top: 10px; }
+        .features { background: white; padding: 50px 20px; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 1400px; margin: 0 auto; }
+        .feature-box { text-align: center; padding: 30px; }
+        .feature-box i { font-size: 50px; color: var(--accent); margin-bottom: 20px; }
+        .feature-box h3 { font-size: 20px; margin-bottom: 15px; color: var(--primary); }
+        .feature-box p { color: #666; line-height: 1.6; }
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7); display: none; justify-content: center; align-items: center; z-index: 2000;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal { background: white; border-radius: 12px; width: 90%; max-width: 500px; max-height: 90vh; overflow-y: auto; animation: modalSlide 0.3s ease; }
+        @keyframes modalSlide { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        .modal-header { background: var(--primary); color: white; padding: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .modal-header h2 { font-size: 22px; }
+        .close-btn { background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
+        .modal-body { padding: 25px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--primary); }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; transition: border 0.3s; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--accent); outline: none; }
+        .social-login { display: flex; gap: 10px; margin-bottom: 20px; }
+        .social-btn { flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 6px; background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.3s; }
+        .social-btn:hover { background: #f5f5f5; }
+        .divider { text-align: center; margin: 20px 0; position: relative; }
+        .divider::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: #ddd; }
+        .divider span { background: white; padding: 0 15px; position: relative; color: #666; }
+        .dashboard { display: none; padding: 20px; max-width: 1400px; margin: 0 auto; }
+        .dashboard.active { display: block; }
+        .dashboard-header { background: white; padding: 25px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .dashboard-header h2 { color: var(--primary); margin-bottom: 10px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 20px; }
+        .stat-card { background: linear-gradient(135deg, var(--accent), #005a6e); color: white; padding: 20px; border-radius: 8px; text-align: center; }
+        .stat-card h4 { font-size: 14px; margin-bottom: 10px; opacity: 0.9; }
+        .stat-card .value { font-size: 28px; font-weight: bold; }
+        .dashboard-grid { display: grid; grid-template-columns: 250px 1fr; gap: 20px; }
+        .sidebar { background: white; border-radius: 8px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); height: fit-content; }
+        .sidebar-menu { list-style: none; }
+        .sidebar-menu li { padding: 12px 15px; cursor: pointer; border-radius: 6px; transition: all 0.3s; display: flex; align-items: center; gap: 10px; margin-bottom: 5px; }
+        .sidebar-menu li:hover, .sidebar-menu li.active { background: #f0f8ff; color: var(--accent); }
+        .sidebar-menu li i { width: 20px; }
+        .content-area { background: white; border-radius: 8px; padding: 25px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .chat-container {
+            display: none; position: fixed; bottom: 20px; right: 20px; width: 350px; height: 500px;
+            background: white; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); z-index: 1500; overflow: hidden; flex-direction: column;
+        }
+        .chat-container.active { display: flex; }
+        .chat-header { background: var(--primary); color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .chat-messages { flex: 1; overflow-y: auto; padding: 15px; background: #e5ddd5; }
+        .message { max-width: 80%; padding: 10px 15px; border-radius: 15px; margin-bottom: 10px; font-size: 14px; line-height: 1.4; }
+        .message.sent { background: #dcf8c6; align-self: flex-end; margin-left: auto; border-bottom-right-radius: 5px; }
+        .message.received { background: white; align-self: flex-start; border-bottom-left-radius: 5px; }
+        .chat-input { display: flex; padding: 10px; background: #f0f0f0; gap: 10px; }
+        .chat-input input { flex: 1; padding: 10px; border: none; border-radius: 20px; padding-left: 15px; }
+        .chat-input button { background: var(--accent); color: white; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; }
+        .payment-container { display: none; max-width: 600px; margin: 80px auto 20px; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .payment-container.active { display: block; }
+        .bank-details { background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid var(--accent); }
+        .bank-details p { margin: 8px 0; font-size: 15px; }
+        .bank-details strong { color: var(--primary); }
+        .upload-area { border: 2px dashed #ddd; border-radius: 8px; padding: 30px; text-align: center; margin: 20px 0; cursor: pointer; transition: all 0.3s; }
+        .upload-area:hover { border-color: var(--accent); background: #f0f8ff; }
+        .admin-panel { display: none; padding: 20px; max-width: 1400px; margin: 0 auto; }
+        .admin-panel.active { display: block; }
+        .admin-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .admin-card { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .admin-card h3 { color: var(--primary); margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+        .notification-badge { background: var(--danger); color: white; padding: 2px 8px; border-radius: 10px; font-size: 12px; }
+        .ai-chat {
+            display: none; position: fixed; bottom: 20px; left: 20px; width: 350px; height: 500px;
+            background: white; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); z-index: 1500; overflow: hidden; flex-direction: column;
+        }
+        .ai-chat.active { display: flex; }
+        .ai-header { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .ai-header i { animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+        .course-container { display: none; max-width: 900px; margin: 80px auto 20px; background: white; border-radius: 16px; box-shadow: 0 8px 30px rgba(0,0,0,0.12); overflow: hidden; }
+        .course-container.active { display: block; }
+        .course-header { background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; padding: 30px 40px; text-align: center; }
+        .course-header h2 { font-size: 28px; margin-bottom: 10px; }
+        .course-header p { opacity: 0.9; font-size: 16px; }
+        .course-body { padding: 40px; }
+        .course-step { display: none; animation: fadeIn 0.4s ease; }
+        .course-step.active { display: block; }
+        .course-step h3 { color: var(--primary); margin-bottom: 20px; font-size: 24px; display: flex; align-items: center; gap: 12px; }
+        .course-step h3 i { background: linear-gradient(135deg, var(--accent), #00a8e8); color: white; width: 40px; height: 40px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 18px; }
+        .course-step p { line-height: 1.8; color: #555; margin-bottom: 18px; font-size: 16px; }
+        .course-step ul { margin: 20px 0; padding-left: 0; list-style: none; }
+        .course-step ul li { padding: 12px 0 12px 35px; position: relative; border-bottom: 1px solid #f0f0f0; color: #444; }
+        .course-step ul li:before { content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; left: 0; color: var(--success); font-size: 16px; }
+        .progress-bar { height: 10px; background: #e0e0e0; border-radius: 5px; margin-bottom: 30px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), #00a8e8); border-radius: 5px; transition: width 0.6s ease; }
+        .step-indicator { display: flex; justify-content: center; gap: 8px; margin-bottom: 25px; }
+        .step-dot { width: 12px; height: 12px; border-radius: 50%; background: #ddd; transition: all 0.3s; }
+        .step-dot.active { background: var(--accent); transform: scale(1.2); }
+        .step-dot.completed { background: var(--success); }
+        .course-nav { display: flex; justify-content: space-between; margin-top: 30px; padding-top: 20px; border-top: 2px solid #f0f0f0; }
+        .course-card { background: linear-gradient(135deg, #f8f9ff, #f0f4ff); border-radius: 12px; padding: 20px; margin: 15px 0; border-left: 4px solid var(--accent); }
+        .course-card h4 { color: var(--primary); margin-bottom: 8px; }
+        .course-card p { font-size: 14px; color: #666; margin: 0; }
+        .highlight-box { background: linear-gradient(135deg, #fff8e1, #ffecb3); border-radius: 12px; padding: 20px; margin: 20px 0; border-left: 4px solid #ffc107; }
+        .highlight-box strong { color: #856404; }
+        .payment-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0; }
+        .payment-card { background: #f8f9fa; border-radius: 10px; padding: 20px; text-align: center; }
+        .payment-card .amount { font-size: 28px; font-weight: bold; color: var(--success); }
+        .payment-card .label { font-size: 13px; color: #666; margin-top: 5px; }
+        .completion-badge { text-align: center; padding: 40px 20px; }
+        .completion-badge i { font-size: 60px; color: var(--success); margin-bottom: 20px; }
+        .completion-badge h3 { font-size: 26px; color: var(--primary); margin-bottom: 15px; }
+        .btn-course { padding: 14px 35px; font-size: 16px; border-radius: 8px; }
+        .btn-course-next { background: linear-gradient(135deg, var(--accent), #005a6e); color: white; border: none; }
+        .btn-course-skip { background: #f0f0f0; color: #666; border: none; margin-left: 10px; }
+        .story-reader { display: none; max-width: 800px; margin: 80px auto 20px; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .story-reader.active { display: block; }
+        .chapter-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid #eee; }
+        .chapter-content { line-height: 1.8; font-size: 16px; color: #333; }
+        .chapter-content p { margin-bottom: 15px; }
+        .footer { background: var(--primary); color: white; padding: 40px 20px 20px; margin-top: 50px; }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; max-width: 1400px; margin: 0 auto 30px; }
+        .footer-section h4 { margin-bottom: 15px; color: var(--secondary); }
+        .footer-section a { color: #ddd; text-decoration: none; display: block; margin: 8px 0; transition: color 0.3s; cursor: pointer; }
+        .footer-section a:hover { color: var(--secondary); }
+        .footer-bottom { text-align: center; padding-top: 20px; border-top: 1px solid #444; color: #999; }
+        @media (max-width: 768px) {
+            .dashboard-grid { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 28px; }
+            .search-bar { display: none; }
+            .chat-container, .ai-chat { width: 90%; right: 5%; left: 5%; }
+        }
+        .fade-in { animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .notification-toast {
+            position: fixed; top: 80px; right: 20px; background: var(--success); color: white;
+            padding: 15px 25px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); display: none; z-index: 3000; animation: slideIn 0.3s ease;
+        }
+        .notification-toast.active { display: block; }
+        @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+        .referral-box { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 25px; border-radius: 8px; margin: 20px 0; }
+        .referral-box h4 { margin-bottom: 15px; }
+        .referral-code { background: rgba(255,255,255,0.2); padding: 10px 15px; border-radius: 6px; font-family: monospace; font-size: 18px; display: inline-block; margin: 10px 0; }
+        .engagement-form { background: #f8f9fa; padding: 25px; border-radius: 8px; margin: 20px 0; }
+        .platform-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px; margin: 20px 0; }
+        .platform-option { text-align: center; padding: 15px; border: 2px solid #ddd; border-radius: 8px; cursor: pointer; transition: all 0.3s; }
+        .platform-option:hover, .platform-option.selected { border-color: var(--accent); background: #f0f8ff; }
+        .platform-option i { font-size: 30px; margin-bottom: 8px; display: block; }
+        .account-display { background: #f0f8ff; padding: 15px; border-radius: 6px; margin: 15px 0; }
+        .story-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; margin-top: 20px; }
+        .story-card { background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: all 0.3s; cursor: pointer; }
+        .story-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
+        .story-cover { height: 250px; background: linear-gradient(135deg, var(--primary), var(--accent)); display: flex; align-items: center; justify-content: center; color: white; font-size: 60px; }
+        .story-info { padding: 15px; }
+        .story-info h4 { margin-bottom: 8px; color: var(--primary); }
+        .story-info .author { color: #666; font-size: 13px; margin-bottom: 8px; }
+        .story-info .price { color: var(--danger); font-weight: bold; }
+        .rating { color: var(--secondary); font-size: 14px; }
+        .warning-banner { background: #fff3cd; border: 1px solid #ffeaa7; color: #856404; padding: 15px; border-radius: 8px; margin: 20px 0; display: flex; align-items: center; gap: 10px; }
+        .warning-banner i { font-size: 20px; }
+        .tabs { display: flex; gap: 5px; margin-bottom: 20px; border-bottom: 2px solid #eee; }
+        .tab { padding: 12px 20px; cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.3s; }
+        .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .welcome-banner { background: linear-gradient(135deg, var(--success), #059669); color: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; display: none; }
+        .welcome-banner.active { display: block; animation: fadeIn 0.5s ease; }
+        .genre-tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 15px 0; }
+        .genre-tag { background: #e0e7ff; color: #4338ca; padding: 5px 12px; border-radius: 20px; font-size: 13px; cursor: pointer; transition: all 0.3s; }
+        .genre-tag:hover, .genre-tag.selected { background: #4338ca; color: white; }
+        button, a, .menu-item, .category-card, .story-card, .platform-option, .genre-tag, .tab, .sidebar-menu li {
+            cursor: pointer; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none;
+        }
+        .btn, .menu-item, .category-card, .story-card, .platform-option, .tab, .sidebar-menu li { min-height: 44px; }
+        .btn:active, .menu-item:active, .category-card:active, .story-card:active, 
+        .platform-option:active, .tab:active, .sidebar-menu li:active, .genre-tag:active {
+            transform: scale(0.95); opacity: 0.8;
+        }
+        .btn { transition: all 0.1s; }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="logo-section">
+            <i class="fas fa-star blue-star" data-action="toggleBlueMenu" title="Main Menu"></i>
+            <a class="brand" data-action="showHome">Brit<span>Market</span></a>
+            <i class="fas fa-star red-star" data-action="showAdminLogin" title="Admin Login"></i>
+        </div>
+        <div class="search-bar">
+            <input type="text" placeholder="Search books, writers, content..." id="searchInput">
+            <button data-action="search"><i class="fas fa-search"></i></button>
+        </div>
+        <div class="nav-links">
+            <a data-action="showLogin"><small>Hello, Guest</small><span><i class="fas fa-user"></i> Sign In</span></a>
+            <a data-action="showDashboard"><small>Your</small><span><i class="fas fa-book"></i> Library</span></a>
+            <a data-action="toggleChat"><small>Support</small><span><i class="fas fa-comments"></i> Chat</span></a>
+        </div>
+    </header>
+
+    <div class="blue-star-menu" id="blueMenu">
+        <div class="menu-header"><i class="fas fa-bars"></i> Brit Market Menu</div>
+        <div class="menu-item" data-action="toggleSubMenu" data-arg="writerSub"><i class="fas fa-pen"></i> Become a Writer<i class="fas fa-chevron-right" style="margin-left:auto"></i></div>
+        <div class="sub-menu" id="writerSub">
+            <div class="menu-item" data-action="showCourse" data-arg="writer"><i class="fas fa-book-open"></i> Blog Writing</div>
+            <div class="menu-item" data-action="showCourse" data-arg="writer"><i class="fas fa-mask"></i> Ghostwriting</div>
+            <div class="menu-item" data-action="showCourse" data-arg="writer"><i class="fas fa-calendar-day"></i> Write Daily Chapters</div>
+            <div class="menu-item" data-action="showCourse" data-arg="writer"><i class="fas fa-lightbulb"></i> Write People's Ideas</div>
+        </div>
+        <div class="menu-item" data-action="toggleSubMenu" data-arg="clientSub"><i class="fas fa-user-tie"></i> Join as Client<i class="fas fa-chevron-right" style="margin-left:auto"></i></div>
+        <div class="sub-menu" id="clientSub">
+            <div class="menu-item" data-action="showGhostwriting"><i class="fas fa-search"></i> Find Ghostwriters</div>
+            <div class="menu-item" data-action="showContentPurchase"><i class="fas fa-shopping-cart"></i> Buy Content</div>
+            <div class="menu-item" data-action="showEngagement"><i class="fas fa-bullhorn"></i> Pay for Engagement</div>
+        </div>
+        <div class="menu-item" data-action="toggleSubMenu" data-arg="affiliateSub"><i class="fas fa-handshake"></i> Join as Affiliate<i class="fas fa-chevron-right" style="margin-left:auto"></i></div>
+        <div class="sub-menu" id="affiliateSub">
+            <div class="menu-item" data-action="showCourse" data-arg="affiliate"><i class="fas fa-graduation-cap"></i> Buy Course (&#8358;15,000)</div>
+            <div class="menu-item" data-action="showAffiliateDashboard"><i class="fas fa-chart-line"></i> Affiliate Dashboard</div>
+        </div>
+        <div class="menu-item" data-action="showEngagement"><i class="fas fa-heart"></i> Get Engagement on Social Media</div>
+        <div class="menu-item" data-action="showStories"><i class="fas fa-book-reader"></i> Read Stories</div>
+        <div class="menu-item" data-action="showWritingServices"><i class="fas fa-feather"></i> Writing Services</div>
+    </div>
+
+    <div class="main-content" id="mainContent">
+        <div id="homepage">
+            <section class="hero">
+                <h1>Turn Your Ideas to Reality</h1>
+                <p>Welcome to Brit Market - the world's premier content marketplace. Read any book of your choice, hire professional writers, monetize your content, or boost your social media engagement. Join thousands of writers, readers, and clients worldwide.</p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary" data-action="showSignup"><i class="fas fa-user-plus"></i> Sign Up Now</button>
+                    <button class="btn btn-secondary" data-action="showStories"><i class="fas fa-book-open"></i> Browse Books</button>
+                    <button class="btn btn-success" data-action="showEngagement"><i class="fas fa-rocket"></i> Boost Engagement</button>
+                </div>
+            </section>
+            <section class="categories">
+                <h2 class="section-title"><i class="fas fa-th-large"></i> Explore Categories</h2>
+                <div class="category-grid">
+                    <div class="category-card" data-action="showStories"><div class="category-icon"><i class="fas fa-book"></i></div><h3>Books &amp; Novels</h3><p>Read stories by chapter. Dark romance, sci-fi, historical, supernatural &amp; more. &#8358;500-&#8358;700 per chapter.</p></div>
+                    <div class="category-card locked" data-action="showContentPurchase"><div class="category-icon"><i class="fas fa-blog"></i></div><h3>Blog Posts</h3><p>Professional blog content for your website. Starting from &#8358;20,000 per post.</p><span class="price-tag">&#8358;20,000</span></div>
+                    <div class="category-card locked" data-action="showContentPurchase"><div class="category-icon"><i class="fas fa-twitter"></i></div><h3>Viral Tweets</h3><p>Engaging tweet content that drives traffic and engagement. Price determined by admin.</p></div>
+                    <div class="category-card" data-action="showGhostwriting"><div class="category-icon"><i class="fas fa-mask"></i></div><h3>Ghostwriting</h3><p>Professional ghostwriters ready to bring your ideas to life. Books, proposals, scripts &amp; more.</p></div>
+                    <div class="category-card" data-action="showWritingServices"><div class="category-icon"><i class="fas fa-film"></i></div><h3>Movie Scripts</h3><p>Professional screenplay and script writing services for filmmakers.</p></div>
+                    <div class="category-card" data-action="showWritingServices"><div class="category-icon"><i class="fas fa-music"></i></div><h3>Music Lyrics</h3><p>Custom song lyrics and music script writing by professional writers.</p></div>
+                    <div class="category-card" data-action="showContentPurchase"><div class="category-icon"><i class="fas fa-file-alt"></i></div><h3>Content Writing</h3><p>High-quality content for websites, marketing, and business needs.</p></div>
+                    <div class="category-card" data-action="showEngagement"><div class="category-icon"><i class="fas fa-share-alt"></i></div><h3>Social Media Boost</h3><p>Get real engagement on Facebook, Instagram, TikTok, YouTube, Twitter &amp; more.</p></div>
+                </div>
+            </section>
+            <section class="features">
+                <div class="features-grid">
+                    <div class="feature-box"><i class="fas fa-globe"></i><h3>Global Access</h3><p>Access Brit Market from anywhere in the world. Writers and clients from all countries welcome.</p></div>
+                    <div class="feature-box"><i class="fas fa-robot"></i><h3>AI-Powered Writing</h3><p>Our AI assistant helps writers edit covers, correct mistakes, and improve their writing quality.</p></div>
+                    <div class="feature-box"><i class="fas fa-money-bill-wave"></i><h3>Get Paid</h3><p>Writers earn &#8358;25,000+ per 100 views/buys. Affiliates earn &#8358;2,000 per referral. Real money, real payouts.</p></div>
+                    <div class="feature-box"><i class="fas fa-shield-alt"></i><h3>Secure Payments</h3><p>Safe payment processing with receipt verification. Admin-monitored transactions for security.</p></div>
+                    <div class="feature-box"><i class="fas fa-comments"></i><h3>Direct Chat</h3><p>WhatsApp-style chat between clients, writers, and admin for seamless communication.</p></div>
+                    <div class="feature-box"><i class="fas fa-star"></i><h3>Reviews &amp; Ratings</h3><p>Review stories you've read and see ratings before purchasing content or hiring writers.</p></div>
+                </div>
+            </section>
+        </div>
+
+        <div class="dashboard" id="dashboard">
+            <div class="dashboard-header">
+                <h2><i class="fas fa-tachometer-alt"></i> Welcome to Your Dashboard</h2>
+                <p id="userGreeting">Hello, Writer! Here's your activity overview.</p>
+                <div class="welcome-banner" id="welcomeBanner"><i class="fas fa-gift"></i> Welcome! Complete your 3-day AI training to unlock full dashboard features, or skip to start writing immediately.</div>
+                <div class="stats-grid">
+                    <div class="stat-card"><h4>Total Earnings</h4><div class="value" id="totalEarnings">&#8358;0</div></div>
+                    <div class="stat-card"><h4>Stories Published</h4><div class="value" id="storiesCount">0</div></div>
+                    <div class="stat-card"><h4>Total Views</h4><div class="value" id="totalViews">0</div></div>
+                    <div class="stat-card"><h4>Balance</h4><div class="value" id="walletBalance">&#8358;0</div></div>
+                </div>
+            </div>
+            <div class="dashboard-grid">
+                <div class="sidebar">
+                    <ul class="sidebar-menu">
+                        <li class="active" data-action="showDashTab" data-arg="overview"><i class="fas fa-home"></i> Overview</li>
+                        <li data-action="showDashTab" data-arg="write"><i class="fas fa-pen"></i> Write New Story</li>
+                        <li data-action="showDashTab" data-arg="stories"><i class="fas fa-book"></i> My Stories</li>
+                        <li data-action="showDashTab" data-arg="ai"><i class="fas fa-robot"></i> AI Assistant</li>
+                        <li data-action="showDashTab" data-arg="chat"><i class="fas fa-comments"></i> Chat with Admin</li>
+                        <li data-action="showDashTab" data-arg="withdraw"><i class="fas fa-money-bill-wave"></i> Withdrawals</li>
+                        <li data-action="showDashTab" data-arg="account"><i class="fas fa-cog"></i> Account Settings</li>
+                        <li data-action="showDashTab" data-arg="referral"><i class="fas fa-users"></i> Referrals</li>
+                        <li data-action="logout"><i class="fas fa-sign-out-alt"></i> Logout</li>
+                    </ul>
+                </div>
+                <div class="content-area">
+                    <div class="tab-content active" id="overviewTab">
+                        <h3>Dashboard Overview</h3>
+                        <p>Welcome to your Brit Market writer dashboard. Start writing and earning today!</p>
+                        <div class="referral-box">
+                            <h4><i class="fas fa-gift"></i> Your Referral Program</h4>
+                            <p>Share your referral link and earn &#8358;2,000 for every person who joins!</p>
+                            <div class="referral-code" id="referralCode">BRIT-REF-12345</div><br>
+                            <button class="btn btn-primary" data-action="copyReferral"><i class="fas fa-copy"></i> Copy Link</button>
+                        </div>
+                        <h4 style="margin-top:30px">Recent Activity</h4>
+                        <div style="background:#f8f9fa; padding:20px; border-radius:8px; margin-top:15px"><p style="color:#666"><i class="fas fa-info-circle"></i> No recent activity. Start writing to see your progress here!</p></div>
+                    </div>
+                    <div class="tab-content" id="writeTab">
+                        <h3>Write New Content</h3>
+                        <p>What would you like to write today? Our AI can guide you through the process.</p>
+                        <div class="form-group" style="margin-top:20px">
+                            <label>Content Type</label>
+                            <select id="contentType" data-action="updateGenreOptions">
+                                <option value="">Select type...</option>
+                                <option value="daily">Daily Chapter Story</option>
+                                <option value="full">Full Book (Soft Copy)</option>
+                                <option value="blog">Blog Post</option>
+                                <option value="tweet">Viral Tweet Thread</option>
+                                <option value="script">Movie Script</option>
+                                <option value="music">Music Lyrics</option>
+                                <option value="content">General Content</option>
+                                <option value="proposal">Business Proposal</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="genreSection" style="display:none">
+                            <label>Story Genre</label>
+                            <div class="genre-tags">
+                                <span class="genre-tag" data-action="selectGenre">Dark Romance</span>
+                                <span class="genre-tag" data-action="selectGenre">Sci-Fi</span>
+                                <span class="genre-tag" data-action="selectGenre">Historical</span>
+                                <span class="genre-tag" data-action="selectGenre">Supernatural</span>
+                                <span class="genre-tag" data-action="selectGenre">Comics</span>
+                                <span class="genre-tag" data-action="selectGenre">Sexual Content</span>
+                                <span class="genre-tag" data-action="selectGenre">Non-Fiction</span>
+                                <span class="genre-tag" data-action="selectGenre">Fiction</span>
+                            </div>
+                        </div>
+                        <div class="form-group"><label>Title</label><input type="text" id="storyTitle" placeholder="Enter your title..."></div>
+                        <div class="form-group"><label>Content</label><textarea id="storyContent" rows="10" placeholder="Start writing here..."></textarea></div>
+                        <button class="btn btn-primary" data-action="publishStory"><i class="fas fa-upload"></i> Publish</button>
+                        <button class="btn btn-secondary" data-action="saveDraft"><i class="fas fa-save"></i> Save Draft</button>
+                    </div>
+                    <div class="tab-content" id="aiTab">
+                        <h3><i class="fas fa-robot"></i> AI Writing Assistant</h3>
+                        <p>I am here to help you write better! I can edit covers, correct mistakes, and guide your writing.</p>
+                        <div style="background:#f0f8ff; padding:20px; border-radius:8px; margin:20px 0">
+                            <h4>AI Training (Day <span id="trainingDay">1</span> of 3)</h4>
+                            <div class="progress-bar"><div class="progress-fill" id="trainingProgress" style="width: 33%"></div></div>
+                            <p id="trainingText">Welcome to Day 1! Today I will teach you about story structure and character development.</p>
+                            <button class="btn btn-accent" data-action="nextTrainingDay" style="margin-top:15px">Continue Training</button>
+                            <button class="btn btn-secondary" data-action="skipTraining" style="margin-top:15px; margin-left:10px">Skip Training</button>
+                        </div>
+                        <div class="form-group"><label>Paste your text for AI review:</label><textarea rows="6" placeholder="Paste content here for grammar check, cover editing suggestions..."></textarea></div>
+                        <button class="btn btn-accent" data-action="aiReview"><i class="fas fa-magic"></i> AI Review</button>
+                    </div>
+                    <div class="tab-content" id="chatTab">
+                        <h3>Chat with Admin</h3>
+                        <p>Discuss your projects, payments, or any concerns with the admin team.</p>
+                        <button class="btn btn-primary" data-action="toggleChat" style="margin-top:15px"><i class="fas fa-comments"></i> Open Chat</button>
+                    </div>
+                    <div class="tab-content" id="withdrawTab">
+                        <h3>Withdrawals</h3>
+                        <div class="account-display">
+                            <h4>Saved Account Details</h4>
+                            <p><strong>Account Name:</strong> <span id="accName">Not set</span></p>
+                            <p><strong>Account Number:</strong> <span id="accNumber">Not set</span></p>
+                            <p><strong>Bank:</strong> <span id="accBank">Not set</span></p>
+                        </div>
+                        <div class="form-group"><label>Amount to Withdraw (&#8358;)</label><input type="number" id="withdrawAmount" placeholder="Enter amount..."></div>
+                        <button class="btn btn-success" data-action="requestWithdrawal"><i class="fas fa-paper-plane"></i> Request Withdrawal</button>
+                        <p style="margin-top:20px; color:#666; font-size:14px"><i class="fas fa-info-circle"></i> Payments are processed within 3 weeks. Admin will be notified automatically.</p>
+                    </div>
+                    <div class="tab-content" id="accountTab">
+                        <h3>Account Settings</h3>
+                        <div class="form-group"><label>Account Name</label><input type="text" id="bankAccName" placeholder="Enter account name"></div>
+                        <div class="form-group"><label>Account Number</label><input type="text" id="bankAccNumber" placeholder="Enter account number"></div>
+                        <div class="form-group"><label>Bank Name</label><input type="text" id="bankName" placeholder="Enter bank name"></div>
+                        <button class="btn btn-primary" data-action="saveAccountDetails"><i class="fas fa-save"></i> Save Account Details</button>
+                    </div>
+                    <div class="tab-content" id="referralTab">
+                        <h3>Your Referrals</h3>
+                        <div class="referral-box">
+                            <h4>Referral Program</h4>
+                            <p>Earn &#8358;2,000 for every successful referral!</p>
+                            <div class="referral-code" id="referralCode2">BRIT-REF-12345</div>
+                            <p style="margin-top:10px">Total Referrals: <strong>0</strong> | Earnings: <strong>&#8358;0</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard" id="storiesPage" style="display:none">
+            <div class="dashboard-header">
+                <h2><i class="fas fa-book-reader"></i> Browse Stories</h2>
+                <p>Discover amazing stories from writers worldwide</p>
+            </div>
+            <div class="tabs">
+                <div class="tab active" data-action="showStoryTab" data-arg="all">All Stories</div>
+                <div class="tab" data-action="showStoryTab" data-arg="romance">Dark Romance</div>
+                <div class="tab" data-action="showStoryTab" data-arg="scifi">Sci-Fi</div>
+                <div class="tab" data-action="showStoryTab" data-arg="supernatural">Supernatural</div>
+                <div class="tab" data-action="showStoryTab" data-arg="historical">Historical</div>
+            </div>
+            <div class="story-grid" id="storyGrid">
+                <div class="story-card" data-action="openStory" data-arg="1">
+                    <div class="story-cover"><i class="fas fa-book"></i></div>
+                    <div class="story-info"><h4>The Dark Prince</h4><div class="author">by Sarah Writes</div><div class="rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half"></i> 4.5</div><div class="price">&#8358;500/chapter</div></div>
+                </div>
+                <div class="story-card" data-action="openStory" data-arg="2">
+                    <div class="story-cover" style="background:linear-gradient(135deg, #764ba2, #667eea)"><i class="fas fa-rocket"></i></div>
+                    <div class="story-info"><h4>Galactic Wars</h4><div class="author">by John SciFi</div><div class="rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i> 5.0</div><div class="price">&#8358;500/chapter</div></div>
+                </div>
+                <div class="story-card" data-action="openStory" data-arg="3">
+                    <div class="story-cover" style="background:linear-gradient(135deg, #f093fb, #f5576c)"><i class="fas fa-heart"></i></div>
+                    <div class="story-info"><h4>Love in Paris</h4><div class="author">by Emily Rose</div><div class="rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i> 4.0</div><div class="price">&#8358;500/chapter</div></div>
+                </div>
+                <div class="story-card" data-action="openStory" data-arg="4">
+                    <div class="story-cover" style="background:linear-gradient(135deg, #4facfe, #00f2fe)"><i class="fas fa-ghost"></i></div>
+                    <div class="story-info"><h4>Haunted Mansion</h4><div class="author">by Ghost Writer</div><div class="rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half"></i> 4.5</div><div class="price">&#8358;500/chapter</div></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="story-reader" id="storyReader">
+            <div class="chapter-nav">
+                <button class="btn btn-secondary" data-action="closeStory"><i class="fas fa-arrow-left"></i> Back</button>
+                <h3 id="readerTitle">Story Title</h3>
+                <div><span style="margin-right:15px">Balance: <strong id="readerBalance">&#8358;0</strong></span><button class="btn btn-primary" data-action="unlockChapter"><i class="fas fa-unlock"></i> Unlock Chapter (&#8358;500)</button></div>
+            </div>
+            <div class="warning-banner"><i class="fas fa-exclamation-triangle"></i><span>Chapters 1-10: &#8358;500 each | Chapters 11+: &#8358;700 each</span></div>
+            <div class="chapter-content" id="chapterContent">
+                <div style="text-align:center; padding:60px 20px; background:#f8f9fa; border-radius:8px">
+                    <i class="fas fa-lock" style="font-size:50px; color:var(--danger); margin-bottom:20px"></i>
+                    <h3>This Chapter is Locked</h3>
+                    <p>Pay &#8358;500 to unlock and read this chapter</p>
+                    <button class="btn btn-primary" data-action="showPayment" data-arg="chapter" style="margin-top:20px"><i class="fas fa-credit-card"></i> Pay Now</button>
+                </div>
+            </div>
+            <div style="margin-top:30px; padding:20px; background:#f8f9fa; border-radius:8px">
+                <h4><i class="fas fa-star"></i> Reviews</h4>
+                <div style="margin-top:15px">
+                    <div style="border-bottom:1px solid #ddd; padding:15px 0">
+                        <div class="rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                        <p style="margin-top:8px">"Amazing story! Couldn't stop reading."</p><small style="color:#666">- Reader123</small>
+                    </div>
+                </div>
+                <div class="form-group" style="margin-top:15px"><label>Write a Review</label><textarea rows="3" placeholder="Share your thoughts..."></textarea></div>
+                <button class="btn btn-primary">Submit Review</button>
+            </div>
+        </div>
+
+        <div class="payment-container" id="paymentPage">
+            <h2><i class="fas fa-credit-card"></i> Make Payment</h2>
+            <div class="bank-details">
+                <h3><i class="fas fa-university"></i> Bank Transfer Details</h3>
+                <p><strong>Account Number:</strong> 9053504968</p>
+                <p><strong>Account Name:</strong> Abioye Oluwanifemi</p>
+                <p><strong>Bank:</strong> OPay</p>
+                <p><strong>Amount:</strong> <span id="paymentAmount">&#8358;15,000</span></p>
+            </div>
+            <div class="upload-area" data-action="trigger-click" data-target="receiptInput">
+                <i class="fas fa-cloud-upload-alt" style="font-size:40px; color:var(--accent); margin-bottom:15px; display:block"></i>
+                <p><strong>Click to upload payment receipt</strong></p>
+                <p style="font-size:13px; color:#666; margin-top:8px">Supported: JPG, PNG, PDF</p>
+                <input type="file" id="receiptInput" style="display:none" accept="image/*,.pdf">
+            </div>
+            <button class="btn btn-success" data-action="submitReceipt" style="width:100%"><i class="fas fa-check"></i> Submit for Verification</button>
+            <p style="margin-top:20px; text-align:center; color:#666; font-size:14px"><i class="fas fa-info-circle"></i> Admin will verify your payment and activate your account within 24 hours.</p>
+        </div>
+
+        <div class="course-container" id="coursePage">
+            <div class="course-header">
+                <h2><i class="fas fa-graduation-cap"></i> Brit Market Academy</h2>
+                <p>Your path to becoming a professional writer or affiliate</p>
+            </div>
+            <div class="course-body">
+                <div class="progress-bar"><div class="progress-fill" id="courseProgress" style="width: 0%"></div></div>
+                <div class="step-indicator" id="stepIndicator">
+                    <div class="step-dot active"></div><div class="step-dot"></div><div class="step-dot"></div>
+                    <div class="step-dot"></div><div class="step-dot"></div><div class="step-dot"></div>
+                </div>
+
+                <div class="course-step active" id="step1">
+                    <h3><i class="fas fa-rocket"></i> Welcome to Brit Market!</h3>
+                    <p>Welcome to your journey as a Brit Market writer or affiliate. This course will guide you through everything you need to know to start earning.</p>
+                    <div class="course-card">
+                        <h4><i class="fas fa-book-open"></i> What You Will Learn</h4>
+                        <ul>
+                            <li>How to navigate the platform and find your way around</li>
+                            <li>How to access your personal dashboard</li>
+                            <li>How to use the AI writing assistant to improve your work</li>
+                            <li>How to publish content and start monetizing immediately</li>
+                            <li>How to withdraw your earnings to your bank account</li>
+                        </ul>
+                    </div>
+                    <div class="course-nav">
+                        <span style="color:#999;font-size:14px">Step 1 of 6</span>
+                        <button class="btn btn-course btn-course-next" data-action="nextCourseStep">Start Learning <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>
+
+                <div class="course-step" id="step2">
+                    <h3><i class="fas fa-user-secret"></i> Who is a Ghostwriter?</h3>
+                    <p>A <strong>ghostwriter</strong> is a professional writer who creates content that is officially credited to another person. You write, they take the credit, you get paid.</p>
+                    <div class="course-card">
+                        <h4><i class="fas fa-star"></i> Why Become a Ghostwriter?</h4>
+                        <ul>
+                            <li>Write books, articles, speeches, and content for paying clients</li>
+                            <li>Get paid directly for your writing skills and creativity</li>
+                            <li>Choose to work anonymously or negotiate writing credit</li>
+                            <li>Build a diverse portfolio across multiple industries</li>
+                            <li>Set your own schedule and work from anywhere</li>
+                        </ul>
+                    </div>
+                    <div class="highlight-box">
+                        <strong><i class="fas fa-lightbulb"></i> Getting Started:</strong> After this course, you'll access your dashboard where the AI will ask what type of writing you want to do — daily chapters, full books, blogs, scripts, tweets, or all of them!
+                    </div>
+                    <div class="course-nav">
+                        <button class="btn btn-course btn-course-skip" data-action="prevCourseStep"><i class="fas fa-arrow-left"></i> Back</button>
+                        <span style="color:#999;font-size:14px">Step 2 of 6</span>
+                        <button class="btn btn-course btn-course-next" data-action="nextCourseStep">Continue <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>
+
+                <div class="course-step" id="step3">
+                    <h3><i class="fas fa-pen-fancy"></i> Types of Writing on Brit Market</h3>
+                    <p>The best part? <strong>You can choose multiple types of writing at the same time.</strong> As long as it's in your dashboard, you can do it.</p>
+                    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:15px; margin:20px 0">
+                        <div class="course-card">
+                            <i class="fas fa-calendar-day" style="color:var(--accent); font-size:28px; margin-bottom:10px; display:block"></i>
+                            <h4>Daily Chapters</h4>
+                            <p>Write one chapter per day, publish immediately, get paid per 100 views or buys</p>
+                        </div>
+                        <div class="course-card">
+                            <i class="fas fa-book" style="color:var(--accent); font-size:28px; margin-bottom:10px; display:block"></i>
+                            <h4>Full Books</h4>
+                            <p>Write complete books for soft copy publishing. Clients buy the entire book at once</p>
+                        </div>
+                        <div class="course-card">
+                            <i class="fas fa-blog" style="color:var(--accent); font-size:28px; margin-bottom:10px; display:block"></i>
+                            <h4>Blog Posts</h4>
+                            <p>Professional blog content for websites and businesses starting at &#8358;20,000</p>
+                        </div>
+                        <div class="course-card">
+                            <i class="fas fa-twitter" style="color:var(--accent); font-size:28px; margin-bottom:10px; display:block"></i>
+                            <h4>Viral Tweets</h4>
+                            <p>Engaging tweet threads and social media content that drives traffic</p>
+                        </div>
+                        <div class="course-card">
+                            <i class="fas fa-film" style="color:var(--accent); font-size:28px; margin-bottom:10px; display:block"></i>
+                            <h4>Movie Scripts</h4>
+                            <p>Professional screenplays and movie scripts for filmmakers and producers</p>
+                        </div>
+                        <div class="course-card">
+                            <i class="fas fa-music" style="color:var(--accent); font-size:28px; margin-bottom:10px; display:block"></i>
+                            <h4>Music Lyrics</h4>
+                            <p>Custom song lyrics and music writing services for artists</p>
+                        </div>
+                    </div>
+                    <div class="highlight-box">
+                        <strong><i class="fas fa-info-circle"></i> Pro Tip:</strong> Many successful writers on Brit Market do 3-4 types simultaneously. Daily chapters bring steady income, while full books bring big payouts when bought.
+                    </div>
+                    <div class="course-nav">
+                        <button class="btn btn-course btn-course-skip" data-action="prevCourseStep"><i class="fas fa-arrow-left"></i> Back</button>
+                        <span style="color:#999;font-size:14px">Step 3 of 6</span>
+                        <button class="btn btn-course btn-course-next" data-action="nextCourseStep">Continue <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>
+
+                <div class="course-step" id="step4">
+                    <h3><i class="fas fa-robot"></i> Your AI Writing Assistant</h3>
+                    <p>Every writer on Brit Market gets a personal AI assistant in their dashboard. Think of it as your writing coach, editor, and designer — all in one.</p>
+                    <div class="course-card">
+                        <h4><i class="fas fa-magic"></i> What the AI Can Do For You</h4>
+                        <ul>
+                            <li><strong>3-Day Training:</strong> Learn story structure, character development, dialogue, and pacing</li>
+                            <li><strong>Cover Design:</strong> Get suggestions for eye-catching story covers and layouts</li>
+                            <li><strong>Grammar Check:</strong> Instantly correct spelling mistakes and grammar errors</li>
+                            <li><strong>Writing Tips:</strong> Receive suggestions to improve tension, flow, and engagement</li>
+                            <li><strong>Genre Guidance:</strong> Get help choosing between dark romance, sci-fi, supernatural, etc.</li>
+                        </ul>
+                    </div>
+                    <div class="highlight-box">
+                        <strong><i class="fas fa-fast-forward"></i> In a hurry?</strong> You can skip the AI training completely and start writing immediately. The AI will still be there to help whenever you need it.
+                    </div>
+                    <div class="course-nav">
+                        <button class="btn btn-course btn-course-skip" data-action="prevCourseStep"><i class="fas fa-arrow-left"></i> Back</button>
+                        <span style="color:#999;font-size:14px">Step 4 of 6</span>
+                        <button class="btn btn-course btn-course-next" data-action="nextCourseStep">Continue <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>
+
+                <div class="course-step" id="step5">
+                    <h3><i class="fas fa-money-bill-wave"></i> How You Get Paid</h3>
+                    <p>Brit Market pays real money for real work. Here's exactly how much you can earn:</p>
+                    <div class="payment-grid">
+                        <div class="payment-card">
+                            <i class="fas fa-pen" style="font-size:30px; color:var(--accent); margin-bottom:10px"></i>
+                            <div class="amount">&#8358;25,000</div>
+                            <div class="label">Per 100 views/buys on daily chapters</div>
+                        </div>
+                        <div class="payment-card">
+                            <i class="fas fa-book" style="font-size:30px; color:var(--accent); margin-bottom:10px"></i>
+                            <div class="amount">Full Book</div>
+                            <div class="label">&#8358;50,000 - &#8358;500,000+ when your complete book is bought by a client</div>
+                        </div>
+                        <div class="payment-card">
+                            <i class="fas fa-users" style="font-size:30px; color:var(--accent); margin-bottom:10px"></i>
+                            <div class="amount">&#8358;2,000</div>
+                            <div class="label">Per successful referral (affiliates)</div>
+                        </div>
+                        <div class="payment-card">
+                            <i class="fas fa-calendar-check" style="font-size:30px; color:var(--accent); margin-bottom:10px"></i>
+                            <div class="amount">&#8358;100</div>
+                            <div class="label">Daily login bonus (affiliates)</div>
+                        </div>
+                    </div>
+                    <div class="course-card">
+                        <h4><i class="fas fa-clock"></i> Payment Timeline</h4>
+                        <ul>
+                            <li>Payments are processed every <strong>3 weeks</strong></li>
+                            <li>Add your bank account details in your dashboard settings</li>
+                            <li>Request withdrawal from your dashboard — admin gets notified automatically</li>
+                            <li>Money is sent directly to your provided account</li>
+                            <li>You will see "Payment Approved" in your dashboard once sent</li>
+                        </ul>
+                    </div>
+                    <div class="highlight-box">
+                        <strong><i class="fas fa-globe"></i> International Writers:</strong> If you're not in Nigeria, the admin will set your payment amount in USD or your local currency. A chat will open automatically to discuss this after you sign up.
+                    </div>
+                    <div class="course-nav">
+                        <button class="btn btn-course btn-course-skip" data-action="prevCourseStep"><i class="fas fa-arrow-left"></i> Back</button>
+                        <span style="color:#999;font-size:14px">Step 5 of 6</span>
+                        <button class="btn btn-course btn-course-next" data-action="nextCourseStep">Continue <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>
+
+                <div class="course-step" id="step6">
+                    <div class="completion-badge">
+                        <i class="fas fa-trophy" style="font-size:60px; color:gold; margin-bottom:20px; filter:drop-shadow(0 2px 4px rgba(0,0,0,0.2))"></i>
+                        <h3>Course Complete!</h3>
+                        <p style="color:#666; max-width:500px; margin:0 auto 20px">Congratulations! You now know how to navigate Brit Market, use the AI assistant, publish content, and get paid. Your dashboard is ready.</p>
+                        <div style="background:#f8f9fa; border-radius:10px; padding:20px; margin:20px auto; max-width:400px; text-align:left">
+                            <h4 style="margin-bottom:15px; color:var(--primary)"><i class="fas fa-check-double"></i> You Now Know How To:</h4>
+                            <ul style="list-style:none; padding:0">
+                                <li style="padding:8px 0"><i class="fas fa-check" style="color:var(--success); margin-right:10px"></i>Navigate the platform</li>
+                                <li style="padding:8px 0"><i class="fas fa-check" style="color:var(--success); margin-right:10px"></i>Access your dashboard</li>
+                                <li style="padding:8px 0"><i class="fas fa-check" style="color:var(--success); margin-right:10px"></i>Use the AI writing assistant</li>
+                                <li style="padding:8px 0"><i class="fas fa-check" style="color:var(--success); margin-right:10px"></i>Write and publish content</li>
+                                <li style="padding:8px 0"><i class="fas fa-check" style="color:var(--success); margin-right:10px"></i>Get paid for your work</li>
+                            </ul>
+                        </div>
+                        <button class="btn btn-success" data-action="finishCourse" style="font-size:18px; padding:16px 45px; margin-top:10px"><i class="fas fa-tachometer-alt"></i> Access My Dashboard</button>
+                        <p style="margin-top:15px; font-size:13px; color:#999">The AI training will start automatically. You can skip it anytime.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard" id="engagementPage" style="display:none">
+            <div class="dashboard-header">
+                <h2><i class="fas fa-bullhorn"></i> Pay for Engagement</h2>
+                <p>Boost your social media presence with real engagement</p>
+            </div>
+            <div class="warning-banner"><i class="fas fa-exclamation-triangle"></i><span><strong>Notice:</strong> Engagement may include non-genuine followers. Click "Continue" to proceed.</span></div>
+            <div class="engagement-form">
+                <h3>Select Platform</h3>
+                <div class="platform-grid">
+                    <div class="platform-option" data-action="selectPlatform"><i class="fab fa-facebook" style="color:#1877f2"></i><span>Facebook</span></div>
+                    <div class="platform-option" data-action="selectPlatform"><i class="fab fa-instagram" style="color:#e4405f"></i><span>Instagram</span></div>
+                    <div class="platform-option" data-action="selectPlatform"><i class="fab fa-twitter" style="color:#1da1f2"></i><span>Twitter</span></div>
+                    <div class="platform-option" data-action="selectPlatform"><i class="fab fa-tiktok" style="color:#000"></i><span>TikTok</span></div>
+                    <div class="platform-option" data-action="selectPlatform"><i class="fab fa-snapchat" style="color:#fffc00"></i><span>Snapchat</span></div>
+                    <div class="platform-option" data-action="selectPlatform"><i class="fab fa-youtube" style="color:#ff0000"></i><span>YouTube</span></div>
+                </div>
+                <div class="form-group" style="margin-top:20px"><label>Your Post/Profile Link</label><input type="url" placeholder="Paste your link here..."></div>
+                <div class="form-group"><label>Type of Engagement Needed</label><select><option>Likes</option><option>Comments</option><option>Shares</option><option>Followers</option><option>Views</option><option>All of the above</option></select></div>
+                <div class="form-group"><label>Number of Engagements</label><input type="number" placeholder="How many engagements do you need?"></div>
+                <button class="btn btn-primary" data-action="toggleChat"><i class="fas fa-comments"></i> Chat with Admin for Pricing</button>
+            </div>
+        </div>
+
+        <div class="dashboard" id="ghostwritingPage" style="display:none">
+            <div class="dashboard-header">
+                <h2><i class="fas fa-mask"></i> Ghostwriting Services</h2>
+                <p>Hire professional writers or offer your writing services</p>
+            </div>
+            <div class="tabs" id="ghostTabs">
+                <div class="tab active" data-action="showGhostTab" data-arg="hire">Hire a Writer</div>
+                <div class="tab" data-action="showGhostTab" data-arg="become">Become a Ghostwriter</div>
+            </div>
+            <div class="tab-content active" id="hireTab">
+                <h3>Find Your Perfect Writer</h3>
+                <p>Describe your project and we'll match you with the best writer for your needs.</p>
+                <div class="form-group" style="margin-top:20px"><label>Project Type</label><select><option>Book/Novel</option><option>Business Proposal</option><option>Website Content</option><option>Speech</option><option>Academic Paper</option><option>Other</option></select></div>
+                <div class="form-group"><label>Describe Your Idea</label><textarea rows="5" placeholder="Tell us about your project, genre preferences, length, timeline..."></textarea></div>
+                <div class="form-group"><label>Budget Range</label><select><option>&#8358;10,000 - &#8358;50,000</option><option>&#8358;50,000 - &#8358;100,000</option><option>&#8358;100,000 - &#8358;500,000</option><option>&#8358;500,000+</option></select></div>
+                <button class="btn btn-primary" data-action="toggleChat"><i class="fas fa-paper-plane"></i> Submit Request &amp; Chat with Admin</button>
+                <div style="margin-top:30px; padding:20px; background:#f8f9fa; border-radius:8px">
+                    <h4><i class="fas fa-info-circle"></i> How It Works</h4>
+                    <ol style="margin-left:20px; line-height:2; margin-top:10px"><li>Submit your project details</li><li>Admin reviews and matches you with a writer</li><li>Chat with writer via admin-moderated chat</li><li>Approve drafts and request revisions</li><li>Pay upon completion</li></ol>
+                </div>
+            </div>
+            <div class="tab-content" id="becomeTab">
+                <h3>Become a Ghostwriter</h3>
+                <p>Join our network of professional ghostwriters and earn from your skills.</p>
+                <div style="margin-top:20px; padding:25px; background:linear-gradient(135deg, #667eea, #764ba2); color:white; border-radius:8px">
+                    <h4>Why Join as a Ghostwriter?</h4>
+                    <ul style="margin-left:20px; line-height:2; margin-top:10px"><li>Access to clients worldwide</li><li>Admin-moderated secure payments</li><li>AI-assisted writing tools</li><li>Flexible work schedule</li><li>Build your portfolio</li></ul>
+                </div>
+                <button class="btn btn-primary" data-action="showCourse" data-arg="writer" style="margin-top:20px"><i class="fas fa-graduation-cap"></i> Take Writer Course</button>
+            </div>
+        </div>
+
+        <div class="admin-panel" id="adminPanel">
+            <div class="dashboard-header">
+                <h2><i class="fas fa-crown"></i> Admin Dashboard</h2>
+                <p>Manage writers, clients, payments, and platform operations</p>
+            </div>
+            <div class="admin-grid">
+                <div class="admin-card">
+                    <h3><i class="fas fa-users"></i> Users <span class="notification-badge">12</span></h3>
+                    <p>Total Writers: <strong>45</strong></p><p>Total Clients: <strong>28</strong></p><p>Total Affiliates: <strong>15</strong></p>
+                    <button class="btn btn-accent" style="margin-top:10px; width:100%">View All Users</button>
+                </div>
+                <div class="admin-card">
+                    <h3><i class="fas fa-money-check-alt"></i> Pending Payments <span class="notification-badge">5</span></h3>
+                    <p>Course Payments: <strong>3</strong></p><p>Withdrawal Requests: <strong>2</strong></p><p>Content Purchases: <strong>8</strong></p>
+                    <button class="btn btn-accent" style="margin-top:10px; width:100%">Review Payments</button>
+                </div>
+                <div class="admin-card">
+                    <h3><i class="fas fa-comments"></i> Active Chats <span class="notification-badge">7</span></h3>
+                    <p>Writer-Admin: <strong>4</strong></p><p>Client-Admin: <strong>2</strong></p><p>Client-Writer: <strong>1</strong></p>
+                    <button class="btn btn-accent" style="margin-top:10px; width:100%">Monitor Chats</button>
+                </div>
+                <div class="admin-card">
+                    <h3><i class="fas fa-book"></i> Content Management</h3>
+                    <p>Published Stories: <strong>23</strong></p><p>Pending Review: <strong>5</strong></p><p>Flagged Content: <strong>1</strong></p>
+                    <button class="btn btn-accent" style="margin-top:10px; width:100%">Manage Content</button>
+                </div>
+                <div class="admin-card">
+                    <h3><i class="fas fa-bullhorn"></i> Engagement Orders <span class="notification-badge">3</span></h3>
+                    <p>Pending: <strong>3</strong></p><p>In Progress: <strong>5</strong></p><p>Completed: <strong>12</strong></p>
+                    <button class="btn btn-accent" style="margin-top:10px; width:100%">Manage Orders</button>
+                </div>
+                <div class="admin-card">
+                    <h3><i class="fas fa-cog"></i> Platform Settings</h3>
+                    <p>Payment Methods: <strong>1 Active</strong></p><p>Course Price: <strong>&#8358;15,000</strong></p><p>International: <strong>Pending Setup</strong></p>
+                    <button class="btn btn-accent" style="margin-top:10px; width:100%">Settings</button>
+                </div>
+            </div>
+            <div style="margin-top:30px; background:white; padding:25px; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.1)">
+                <h3><i class="fas fa-bell"></i> AI Notifications</h3>
+                <div style="margin-top:15px">
+                    <div style="padding:15px; background:#f8f9fa; border-radius:6px; margin-bottom:10px; border-left:4px solid var(--accent)">
+                        <strong>New Course Purchase:</strong> User #1234 paid for writer course. Receipt uploaded. Awaiting verification.
+                        <span style="float:right; color:#666; font-size:12px">2 mins ago</span>
+                    </div>
+                    <div style="padding:15px; background:#f8f9fa; border-radius:6px; margin-bottom:10px; border-left:4px solid var(--danger)">
+                        <strong>Withdrawal Request:</strong> Writer #567 requested &#8358;25,000 withdrawal. Account: 9053504968, OPay.
+                        <span style="float:right; color:#666; font-size:12px">15 mins ago</span>
+                    </div>
+                    <div style="padding:15px; background:#f8f9fa; border-radius:6px; margin-bottom:10px; border-left:4px solid var(--success)">
+                        <strong>Chat Alert:</strong> Potential harassment detected in Writer-Client chat #89. Review recommended.
+                        <span style="float:right; color:#666; font-size:12px">1 hour ago</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard" id="affiliateDashboard" style="display:none">
+            <div class="dashboard-header">
+                <h2><i class="fas fa-handshake"></i> Affiliate Dashboard</h2>
+                <p>Earn by engaging with posts and referring new users</p>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card"><h4>Total Earnings</h4><div class="value">&#8358;0</div></div>
+                <div class="stat-card"><h4>Referrals</h4><div class="value">0</div></div>
+                <div class="stat-card"><h4>Posts Engaged</h4><div class="value">0</div></div>
+                <div class="stat-card"><h4>Daily Login Streak</h4><div class="value">0 days</div></div>
+            </div>
+            <div style="margin-top:30px; display:grid; grid-template-columns: 1fr 1fr; gap:20px">
+                <div style="background:white; padding:25px; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.1)">
+                    <h3><i class="fas fa-tasks"></i> Available Tasks</h3>
+                    <div style="margin-top:15px">
+                        <div style="padding:15px; border:1px solid #eee; border-radius:6px; margin-bottom:10px">
+                            <p><strong>Engage with Instagram Post</strong></p><p style="font-size:13px; color:#666">Like and comment on client's fashion post</p><p style="color:var(--success); font-weight:bold; margin-top:5px">Earn: &#8358;50</p>
+                            <button class="btn btn-primary" style="margin-top:10px; font-size:13px">Start Task</button>
+                        </div>
+                        <div style="padding:15px; border:1px solid #eee; border-radius:6px; margin-bottom:10px">
+                            <p><strong>Share Twitter Post</strong></p><p style="font-size:13px; color:#666">Retweet and quote client's business tweet</p><p style="color:var(--success); font-weight:bold; margin-top:5px">Earn: &#8358;75</p>
+                            <button class="btn btn-primary" style="margin-top:10px; font-size:13px">Start Task</button>
+                        </div>
+                    </div>
+                </div>
+                <div style="background:white; padding:25px; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.1)">
+                    <h3><i class="fas fa-users"></i> Your Referrals</h3>
+                    <div class="referral-box" style="margin-top:15px">
+                        <h4>Referral Code</h4><div class="referral-code">BRIT-AFF-67890</div>
+                        <p style="margin-top:10px">Earn &#8358;2,000 per successful referral!</p>
+                        <button class="btn btn-primary" data-action="copyReferral" style="margin-top:10px"><i class="fas fa-copy"></i> Copy Code</button>
+                    </div>
+                    <div style="margin-top:20px; padding:15px; background:#f8f9fa; border-radius:6px"><p><strong>Total Referral Earnings:</strong> &#8358;0</p><p><strong>Successful Referrals:</strong> 0</p></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="chat-container" id="chatContainer">
+        <div class="chat-header" style="background:linear-gradient(135deg, #075e54, #128c7e)">
+            <div style="display:flex; align-items:center; gap:12px">
+                <div style="width:40px; height:40px; background:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#128c7e; font-weight:bold; font-size:18px">B</div>
+                <div>
+                    <div style="font-weight:bold; font-size:16px">Brit Market Admin</div>
+                    <div style="font-size:12px; opacity:0.8"><i class="fas fa-circle" style="color:#4ad504; font-size:8px; margin-right:4px"></i>Online</div>
+                </div>
+            </div>
+            <div style="display:flex; gap:15px; align-items:center">
+                <i class="fas fa-search" style="cursor:pointer"></i>
+                <i class="fas fa-ellipsis-v" style="cursor:pointer"></i>
+                <button class="close-btn" data-action="toggleChat" style="font-size:20px"><i class="fas fa-times"></i></button>
+            </div>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div style="text-align:center; margin:10px 0"><span style="background:rgba(0,0,0,0.1); padding:5px 12px; border-radius:15px; font-size:12px; color:#666">Today</span></div>
+            <div class="message received">
+                <div style="margin-bottom:4px">&#128075; Hello! Welcome to Brit Market support.</div>
+                <div>I am here to help you with:</div>
+                <div style="margin-top:6px; font-size:13px">&#8226; Writing projects &amp; ghostwriting</div>
+                <div style="font-size:13px">&#8226; Payment &amp; withdrawal issues</div>
+                <div style="font-size:13px">&#8226; Course &amp; dashboard questions</div>
+                <div style="font-size:13px">&#8226; Social media engagement orders</div>
+                <div style="margin-top:8px">How can I help you today? &#128522;</div>
+                <div style="text-align:right; font-size:11px; color:#999; margin-top:4px">9:35 AM <i class="fas fa-check-double" style="color:#4ad504"></i></div>
+            </div>
+        </div>
+        <div class="chat-input" style="background:#f0f0f0; padding:10px; display:flex; align-items:center; gap:10px">
+            <i class="far fa-smile" style="font-size:24px; color:#666; cursor:pointer"></i>
+            <i class="fas fa-paperclip" style="font-size:20px; color:#666; cursor:pointer; transform:rotate(-45deg)"></i>
+            <button style="background:none; border:none; color:#666; font-size:22px; cursor:pointer; padding:8px"><i class="fas fa-microphone"></i></button>
+            <input type="text" id="chatInput" placeholder="Type a message..." style="flex:1; padding:12px 15px; border:none; border-radius:20px; background:white; font-size:15px">
+            <button data-action="sendMessage" style="background:#128c7e; color:white; border:none; width:45px; height:45px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; cursor:pointer"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+
+    <div class="ai-chat" id="aiChat">
+        <div class="ai-header"><div><i class="fas fa-robot"></i> Brit AI Assistant</div><button class="close-btn" data-action="toggleAIChat"><i class="fas fa-times"></i></button></div>
+        <div class="chat-messages" id="aiMessages"><div class="message received">Hi! I am your AI writing assistant. I can help you with editing, grammar checks, cover design suggestions, and writing tips. What would you like help with today?</div></div>
+        <div class="chat-input"><input type="text" id="aiInput" placeholder="Ask me anything..."><button data-action="sendAIMessage"><i class="fas fa-paper-plane"></i></button></div>
+    </div>
+
+    <div class="modal-overlay" id="authModal">
+        <div class="modal">
+            <div class="modal-header"><h2 id="authTitle"><i class="fas fa-user"></i> Sign In</h2><button class="close-btn" data-action="closeModal"><i class="fas fa-times"></i></button></div>
+            <div class="modal-body">
+                <div class="social-login">
+                    <button class="social-btn"><i class="fab fa-google" style="color:#db4437"></i> Google</button>
+                    <button class="social-btn"><i class="fas fa-phone" style="color:#25d366"></i> Phone</button>
+                    <button class="social-btn"><i class="fas fa-envelope" style="color:#ea4335"></i> Email</button>
+                </div>
+                <div class="divider"><span>or continue with</span></div>
+                <div id="signupForm" style="display:none">
+                    <div class="form-group"><label>Full Name</label><input type="text" id="fullName" placeholder="Enter your full name"></div>
+                    <div class="form-group"><label>Page/Brand Name</label><input type="text" id="pageName" placeholder="Your writer/brand name"></div>
+                    <div class="form-group"><label>Age</label><input type="number" id="userAge" placeholder="Must be 18 or above" min="18"></div>
+                    <div class="form-group"><label>Email or Phone</label><input type="text" id="userContact" placeholder="Email or phone number"></div>
+                    <div class="form-group"><label>Verification Code</label><div style="display:flex; gap:10px"><input type="text" placeholder="Enter code" style="flex:1"><button class="btn btn-secondary" style="padding:12px 20px">Send Code</button></div></div>
+                    <div class="form-group"><label>Password</label><input type="password" id="userPassword" placeholder="Create password"></div>
+                    <button class="btn btn-primary" data-action="completeSignup" style="width:100%"><i class="fas fa-user-plus"></i> Create Account</button>
+                    <p style="text-align:center; margin-top:15px">Already have an account? <a data-action="showLogin" style="color:var(--accent); cursor:pointer">Sign In</a></p>
+                </div>
+                <div id="loginForm">
+                    <div class="form-group"><label>Email / Phone / Username</label><input type="text" placeholder="Enter your credentials"></div>
+                    <div class="form-group"><label>Password</label><input type="password" placeholder="Enter password"></div>
+                    <button class="btn btn-primary" data-action="login" style="width:100%"><i class="fas fa-sign-in-alt"></i> Sign In</button>
+                    <p style="text-align:center; margin-top:15px">New here? <a data-action="showSignupForm" style="color:var(--accent); cursor:pointer">Create Account</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="adminModal">
+        <div class="modal" style="max-width:400px">
+            <div class="modal-header" style="background:var(--danger)"><h2><i class="fas fa-crown"></i> Admin Login</h2><button class="close-btn" data-action="closeAdminModal"><i class="fas fa-times"></i></button></div>
+            <div class="modal-body">
+                <div class="form-group"><label>Admin Email</label><input type="email" id="adminEmail" placeholder="Enter admin email"></div>
+                <div class="form-group"><label>Password</label><input type="password" id="adminPassword" placeholder="Enter password"></div>
+                <div class="form-group"><label>Passcode</label><input type="password" id="adminPasscode" placeholder="Enter passcode"></div>
+                <button class="btn btn-danger" data-action="adminLogin" style="width:100%"><i class="fas fa-lock"></i> Access Admin Panel</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="notification-toast" id="notification"><i class="fas fa-check-circle"></i> <span id="notifText">Success!</span></div>
+
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-section">
+                <h4>About Brit Market</h4>
+                <a data-action="showHome">About Us</a>
+                <a>Careers</a>
+                <a>Press</a>
+                <a>Blog</a>
+            </div>
+            <div class="footer-section">
+                <h4>For Writers</h4>
+                <a data-action="showCourse" data-arg="writer">Writer Course</a>
+                <a data-action="showDashboard">Dashboard</a>
+                <a>Writing Guidelines</a>
+                <a>Payment Info</a>
+            </div>
+            <div class="footer-section">
+                <h4>For Clients</h4>
+                <a data-action="showGhostwriting">Hire Writers</a>
+                <a data-action="showContentPurchase">Buy Content</a>
+                <a data-action="showEngagement">Get Engagement</a>
+                <a>Pricing</a>
+            </div>
+            <div class="footer-section">
+                <h4>Support</h4>
+                <a data-action="toggleChat">Help Center</a>
+                <a>Safety Center</a>
+                <a>Contact: Nifemiabioye59@gmail.com</a>
+                <a>Terms of Service</a>
+            </div>
+        </div>
+        <div class="footer-bottom"><p> Brit Market. All rights reserved. | Contact: Nifemiabioye59@gmail.com</p></div>
+    </footer>
+
+    <script>
+    (function() {
+        'use strict';
+        
+        var currentUser = null, walletBalance = 0, currentCourseStep = 1, trainingDay = 1, currentStoryId = null;
+        
+        function $(id) { return document.getElementById(id); }
+        
+        function showNotification(text, type) {
+            type = type || 'success';
+            var notif = $('notification'), notifText = $('notifText');
+            if (!notif || !notifText) return;
+            notifText.textContent = text;
+            notif.style.background = (type === 'error') ? 'var(--danger)' : 'var(--success)';
+            notif.classList.add('active');
+            setTimeout(function() { notif.classList.remove('active'); }, 3000);
+        }
+        
+        function hideAll() {
+            var ids = ['homepage','dashboard','storiesPage','storyReader','paymentPage','coursePage','engagementPage','ghostwritingPage','adminPanel','affiliateDashboard'];
+            ids.forEach(function(id) {
+                var el = $(id); if (!el) return;
+                if (id === 'homepage') el.style.display = 'none';
+                else if (['dashboard','storyReader','paymentPage','coursePage','adminPanel'].indexOf(id) !== -1) el.classList.remove('active');
+                else el.style.display = 'none';
+            });
+        }
+        
+        function showHome() { 
+            hideAll(); 
+            var el = $('homepage'); 
+            if (el) el.style.display = 'block'; 
+            window.scrollTo(0, 0); 
+        }
+        
+        function showDashboard() { 
+            hideAll(); 
+            var el = $('dashboard'); 
+            if (el) el.classList.add('active'); 
+            var wb = $('welcomeBanner'); 
+            if (wb) wb.classList.add('active'); 
+            window.scrollTo(0, 0); 
+        }
+        
+        function showStories() { 
+            hideAll(); 
+            var el = $('storiesPage'); 
+            if (el) el.style.display = 'block'; 
+            window.scrollTo(0, 0); 
+        }
+        
+        function showEngagement() { 
+            hideAll(); 
+            var el = $('engagementPage'); 
+            if (el) el.style.display = 'block'; 
+            window.scrollTo(0, 0); 
+        }
+        
+        function showGhostwriting() { 
+            hideAll(); 
+            var el = $('ghostwritingPage'); 
+            if (el) el.style.display = 'block'; 
+            window.scrollTo(0, 0); 
+        }
+        
+        function showAffiliateDashboard() { 
+            hideAll(); 
+            var el = $('affiliateDashboard'); 
+            if (el) el.style.display = 'block'; 
+            window.scrollTo(0, 0); 
+        }
+        
+        function showContentPurchase() { 
+            showNotification('Content marketplace coming soon! Browse stories for now.'); 
+            showStories(); 
+        }
+        
+        function showWritingServices() { 
+            showGhostwriting(); 
+        }
+        
+        function toggleBlueMenu() { 
+            var el = $('blueMenu'); 
+            if (el) el.classList.toggle('active'); 
+        }
+        
+        function toggleSubMenu(id) { 
+            var el = $(id); 
+            if (el) el.classList.toggle('active'); 
+        }
+        
+        function showSignup() { 
+            var m = $('authModal'), t = $('authTitle'), s = $('signupForm'), l = $('loginForm'); 
+            if (m) m.classList.add('active'); 
+            if (t) t.innerHTML = '<i class="fas fa-user-plus"></i> Sign Up'; 
+            if (s) s.style.display = 'block'; 
+            if (l) l.style.display = 'none'; 
+        }
+        
+        function showLogin() { 
+            var m = $('authModal'), t = $('authTitle'), s = $('signupForm'), l = $('loginForm'); 
+            if (m) m.classList.add('active'); 
+            if (t) t.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In'; 
+            if (s) s.style.display = 'none'; 
+            if (l) l.style.display = 'block'; 
+        }
+        
+        function showSignupForm() { 
+            showSignup(); 
+        }
+        
+        function closeModal() { 
+            var el = $('authModal'); 
+            if (el) el.classList.remove('active'); 
+        }
+        
+        function completeSignup() { 
+            var a = $('userAge'), n = $('fullName'), age = a ? parseInt(a.value) : 0, name = n ? n.value.trim() : ''; 
+            if (!age || age < 18) { 
+                showNotification('You must be 18 or older to join!', 'error'); 
+                return; 
+            } 
+            if (name) { 
+                currentUser = { name: name, type: 'writer' }; 
+                closeModal(); 
+                showNotification('Welcome to Brit Market, ' + name + '!'); 
+                showDashboard(); 
+            } else { 
+                showNotification('Please enter your full name!', 'error'); 
+            } 
+        }
+        
+        function login() { 
+            currentUser = { name: 'Writer User', type: 'writer' }; 
+            closeModal(); 
+            showNotification('Welcome back!'); 
+            showDashboard(); 
+        }
+        
+        function logout() { 
+            currentUser = null; 
+            showNotification('Logged out successfully'); 
+            showHome(); 
+        }
+        
+        function showDashTab(tab, clickedEl) { 
+            document.querySelectorAll('.sidebar-menu li').forEach(function(li) { li.classList.remove('active'); }); 
+            if (clickedEl) clickedEl.classList.add('active'); 
+            document.querySelectorAll('.tab-content').forEach(function(t) { t.classList.remove('active'); }); 
+            var target = $(tab + 'Tab'); 
+            if (target) target.classList.add('active'); 
+        }
+        
+        function updateGenreOptions() { 
+            var type = $('contentType'), genreSection = $('genreSection'); 
+            if (type && genreSection) genreSection.style.display = (type.value === 'daily' || type.value === 'full') ? 'block' : 'none'; 
+        }
+        
+        function selectGenre(el) { 
+            document.querySelectorAll('.genre-tag').forEach(function(t) { t.classList.remove('selected'); }); 
+            if (el) el.classList.add('selected'); 
+        }
+        
+        function publishStory() { 
+            showNotification('Story published! A copy sent to admin.'); 
+            var sc = $('storiesCount'); 
+            if (sc) sc.textContent = '1'; 
+        }
+        
+        function saveDraft() { 
+            showNotification('Draft saved!'); 
+        }
+        
+        function nextTrainingDay() { 
+            trainingDay++; 
+            if (trainingDay > 3) { 
+                showNotification('Training complete! Full dashboard unlocked.'); 
+                var td = $('trainingDay'), tp = $('trainingProgress'); 
+                if (td) td.textContent = '3'; 
+                if (tp) tp.style.width = '100%'; 
+                return; 
+            } 
+            var td = $('trainingDay'), tp = $('trainingProgress'), tt = $('trainingText'); 
+            if (td) td.textContent = trainingDay; 
+            if (tp) tp.style.width = (trainingDay * 33) + '%'; 
+            var texts = [
+                'Welcome to Day 1! Today I will teach you about story structure and character development.',
+                'Let us learn about dialogue, pacing, and building tension in your stories.',
+                'Final day! We will cover editing, cover design, and publishing best practices.'
+            ]; 
+            if (tt) tt.textContent = texts[trainingDay - 1]; 
+        }
+        
+        function skipTraining() { 
+            showNotification('Training skipped. Start writing immediately!'); 
+            var tp = $('trainingProgress'); 
+            if (tp) tp.style.width = '100%'; 
+        }
+        
+        function aiReview() { 
+            showNotification('AI review complete! Ready to publish!'); 
+        }
+        
+        function saveAccountDetails() { 
+            var name = $('bankAccName'), number = $('bankAccNumber'), bank = $('bankName'); 
+            if (name && number && bank && name.value && number.value && bank.value) { 
+                var an = $('accName'), anum = $('accNumber'), ab = $('accBank'); 
+                if (an) an.textContent = name.value; 
+                if (anum) anum.textContent = number.value; 
+                if (ab) ab.textContent = bank.value; 
+                showNotification('Account details saved!'); 
+            } 
+        }
+        
+        function requestWithdrawal() { 
+            var amount = $('withdrawAmount'); 
+            if (amount && amount.value && parseInt(amount.value) > 0) 
+                showNotification('Withdrawal request of N' + amount.value + ' sent to admin!'); 
+        }
+        
+        function copyReferral() { 
+            var text = 'https://britmarket.com/ref/BRIT-REF-12345'; 
+            if (navigator.clipboard && navigator.clipboard.writeText) { 
+                navigator.clipboard.writeText(text).then(function() { 
+                    showNotification('Referral link copied!'); 
+                }).catch(function() { 
+                    showNotification('Referral link copied!'); 
+                }); 
+            } else { 
+                var ta = document.createElement('textarea'); 
+                ta.value = text; 
+                document.body.appendChild(ta); 
+                ta.select(); 
+                document.execCommand('copy'); 
+                document.body.removeChild(ta); 
+                showNotification('Referral link copied!'); 
+            } 
+        }
+        
+        function openStory(id) { 
+            currentStoryId = id; 
+            hideAll(); 
+            var sr = $('storyReader'), rt = $('readerTitle'); 
+            if (sr) sr.classList.add('active'); 
+            if (rt) rt.textContent = 'The Dark Prince - Chapter 1'; 
+            window.scrollTo(0, 0); 
+        }
+        
+        function closeStory() { 
+            showStories(); 
+        }
+        
+        function unlockChapter() { 
+            var cc = $('chapterContent'), rb = $('readerBalance'), wb = $('walletBalance'); 
+            if (walletBalance >= 500) { 
+                walletBalance -= 500; 
+                if (wb) wb.textContent = 'N' + walletBalance; 
+                if (rb) rb.textContent = 'N' + walletBalance; 
+                if (cc) cc.innerHTML = '<h2>Chapter 1: The Beginning</h2><p>The rain fell heavily against the windows of the old mansion, creating a rhythmic pattern that echoed through the empty halls. Sarah stood at the entrance, her heart racing with a mixture of fear and excitement...</p><p>She had received the letter only three days ago, summoning her to this place she had never heard of. The lawyer\'s words still rang in her ears: "You are the sole heir to the Blackwood estate."</p><p>As she stepped inside, the door creaked shut behind her, sealing her fate in ways she could never have imagined...</p>'; 
+                showNotification('Chapter unlocked! Enjoy reading.'); 
+            } else { 
+                showNotification('Insufficient balance! Please add funds.', 'error'); 
+            } 
+        }
+        
+        function showPayment(type) { 
+            hideAll(); 
+            var pp = $('paymentPage'), pa = $('paymentAmount'); 
+            if (pp) pp.classList.add('active'); 
+            if (pa) pa.textContent = (type === 'chapter') ? 'N500' : 'N15,000'; 
+            window.scrollTo(0, 0); 
+        }
+        
+        function submitReceipt() { 
+            showNotification('Receipt submitted! Admin will verify within 24 hours.'); 
+            setTimeout(function() { 
+                walletBalance += 5000; 
+                var wb = $('walletBalance'); 
+                if (wb) wb.textContent = 'N' + walletBalance; 
+                showHome(); 
+            }, 2000); 
+        }
+        
+        function showCourse(type) { 
+            hideAll(); 
+            var cp = $('coursePage'); 
+            if (cp) cp.classList.add('active'); 
+            currentCourseStep = 1; 
+            updateCourseProgress(); 
+            window.scrollTo(0, 0); 
+        }
+        
+        function nextCourseStep() { 
+            currentCourseStep++; 
+            updateCourseProgress(); 
+        }
+        
+        function prevCourseStep() { 
+            if (currentCourseStep > 1) { 
+                currentCourseStep--; 
+                updateCourseProgress(); 
+            } 
+        }
+        
+        function updateCourseProgress() { 
+            var totalSteps = 6, progress = ((currentCourseStep - 1) / (totalSteps - 1)) * 100, cp = $('courseProgress'); 
+            if (cp) cp.style.width = progress + '%'; 
+            document.querySelectorAll('.course-step').forEach(function(step, index) { 
+                step.classList.remove('active'); 
+                if (index + 1 === currentCourseStep) step.classList.add('active'); 
+            }); 
+            document.querySelectorAll('.step-dot').forEach(function(dot, index) { 
+                dot.classList.remove('active', 'completed'); 
+                if (index + 1 === currentCourseStep) dot.classList.add('active'); 
+                else if (index + 1 < currentCourseStep) dot.classList.add('completed'); 
+            }); 
+        }
+        
+        function finishCourse() { 
+            showNotification('Course completed! Dashboard unlocked.'); 
+            showDashboard(); 
+        }
+        
+        function selectPlatform(el) { 
+            document.querySelectorAll('.platform-option').forEach(function(p) { p.classList.remove('selected'); }); 
+            if (el) el.classList.add('selected'); 
+        }
+        
+        function showGhostTab(tab, clickedEl) { 
+            document.querySelectorAll('#ghostTabs .tab').forEach(function(t) { t.classList.remove('active'); }); 
+            if (clickedEl) clickedEl.classList.add('active'); 
+            document.querySelectorAll('#ghostwritingPage .tab-content').forEach(function(t) { t.classList.remove('active'); }); 
+            var target = $(tab + 'Tab'); 
+            if (target) target.classList.add('active'); 
+        }
+        
+        function showAdminLogin() { 
+            var el = $('adminModal'); 
+            if (el) el.classList.add('active'); 
+        }
+        
+        function closeAdminModal() { 
+            var el = $('adminModal'); 
+            if (el) el.classList.remove('active'); 
+        }
+        
+        function adminLogin() { 
+            var email = $('adminEmail'), password = $('adminPassword'), passcode = $('adminPasscode'); 
+            if (email && password && passcode && email.value === 'Nifemiabioye59@gmail.com' && password.value === 'Nife2005#' && passcode.value === '101010brit#') { 
+                closeAdminModal(); 
+                hideAll(); 
+                var ap = $('adminPanel'); 
+                if (ap) ap.classList.add('active'); 
+                showNotification('Welcome, Admin!'); 
+                window.scrollTo(0, 0); 
+            } else { 
+                showNotification('Invalid credentials!', 'error'); 
+            } 
+        }
+        
+        function toggleChat() { 
+            var el = $('chatContainer'); 
+            if (el) el.classList.toggle('active'); 
+        }
+        
+        function sendMessage() { 
+            var input = $('chatInput'), messages = $('chatMessages'); 
+            if (!input || !messages) return; 
+            var text = input.value.trim(); 
+            if (!text) return; 
+            var time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}); 
+            messages.innerHTML += '<div class="message sent"><div>' + escapeHtml(text) + '</div><div style="text-align:right; font-size:11px; color:#666; margin-top:4px">' + time + ' <i class="fas fa-check-double" style="color:#4ad504"></i></div></div>'; 
+            messages.scrollTop = messages.scrollHeight; 
+            input.value = ''; 
+            setTimeout(function() { 
+                messages.innerHTML += '<div class="message received" id="typingIndicator"><div style="display:flex; gap:4px; align-items:center; padding:8px 0"><div style="width:8px; height:8px; background:#999; border-radius:50%; animation:bounce 1s infinite"></div><div style="width:8px; height:8px; background:#999; border-radius:50%; animation:bounce 1s infinite 0.2s"></div><div style="width:8px; height:8px; background:#999; border-radius:50%; animation:bounce 1s infinite 0.4s"></div></div></div>'; 
+                messages.scrollTop = messages.scrollHeight; 
+            }, 500); 
+            setTimeout(function() { 
+                var typing = $('typingIndicator'); 
+                if (typing) typing.remove(); 
+                var responseTime = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}); 
+                messages.innerHTML += '<div class="message received"><div>Thank you for reaching out! &#128229;</div><div style="margin-top:8px">An admin will review your message and respond shortly. For urgent matters, you can also email:</div><div style="margin-top:6px; font-weight:bold; color:#128c7e">Nifemiabioye59@gmail.com</div><div style="text-align:right; font-size:11px; color:#999; margin-top:4px">' + responseTime + ' <i class="fas fa-check-double" style="color:#4ad504"></i></div></div>'; 
+                messages.scrollTop = messages.scrollHeight; 
+            }, 2500); 
+        }
+        
+        function handleChatKey(e) { 
+            if (e && e.key === 'Enter') sendMessage(); 
+        }
+        
+        function toggleAIChat() { 
+            var el = $('aiChat'); 
+            if (el) el.classList.toggle('active'); 
+        }
+        
+        function sendAIMessage() { 
+            var input = $('aiInput'), messages = $('aiMessages'); 
+            if (!input || !messages) return; 
+            var text = input.value.trim(); 
+            if (!text) return; 
+            messages.innerHTML += '<div class="message sent">' + escapeHtml(text) + '</div>'; 
+            messages.scrollTop = messages.scrollHeight; 
+            setTimeout(function() { 
+                var userMsg = text.toLowerCase(), response = ''; 
+                if (userMsg.indexOf('grammar') !== -1 || userMsg.indexOf('spelling') !== -1 || userMsg.indexOf('mistake') !== -1) 
+                    response = 'I have scanned your text. Here are the corrections:\n\n1. Changed "thier" to "their"\n2. Fixed comma splice in paragraph 2\n3. Added missing apostrophe in "writers"\n\nYour content is now polished and ready!'; 
+                else if (userMsg.indexOf('cover') !== -1 || userMsg.indexOf('design') !== -1 || userMsg.indexOf('image') !== -1) 
+                    response = 'For your story cover, I recommend:\n\n&#127912; Color Scheme: Deep purple with gold accents\n&#9163; Layout: Title centered, author name at bottom\n&#128444; Image: Mysterious silhouette or abstract art\n&#10024; Font: Serif for title, sans-serif for subtitle\n\nWould you like me to generate a detailed cover brief?'; 
+                else if (userMsg.indexOf('story') !== -1 || userMsg.indexOf('plot') !== -1 || userMsg.indexOf('chapter') !== -1) 
+                    response = 'Great story concept! Here is my analysis:\n\n&#9989; Strong opening hook — keeps readers engaged\n&#9888; Chapter 3 needs more tension — consider adding a conflict\n&#9989; Dialogue feels natural and authentic\n&#128161; Suggestion: Foreshadow the ending in chapter 5\n\nWould you like me to suggest specific edits for chapter 3?'; 
+                else if (userMsg.indexOf('character') !== -1 || userMsg.indexOf('hero') !== -1 || userMsg.indexOf('villain') !== -1) 
+                    response = 'Character development feedback:\n\n&#128100; Protagonist: Motivation is clear, but add a flaw to make them relatable\n&#128127; Antagonist: Too one-dimensional — give them a tragic backstory\n&#128149; Love interest: Chemistry is good, but slow down the romance\n\nTry adding an internal conflict that mirrors the external plot.'; 
+                else if (userMsg.indexOf('genre') !== -1 || userMsg.indexOf('romance') !== -1 || userMsg.indexOf('sci-fi') !== -1) 
+                    response = 'Genre selection guide:\n\n&#128214; Dark Romance: High demand, passionate readers, good pay\n&#128640; Sci-Fi: Growing market, loyal fanbase, series potential\n&#128123; Supernatural: Trending now, viral potential on social media\n&#128218; Historical: Niche but dedicated readers, higher prices\n\nBased on current trends, I recommend starting with Dark Romance or Supernatural. Want market data?'; 
+                else if (userMsg.indexOf('help') !== -1 || userMsg.indexOf('start') !== -1 || userMsg.indexOf('begin') !== -1) 
+                    response = 'Welcome! I am your AI writing assistant. I can help you with:\n\n&#128221; Grammar &amp; spelling checks\n&#127912; Cover design suggestions\n&#128214; Story structure &amp; plot development\n&#128100; Character development\n&#128176; Genre market analysis\n&#9997; Writing techniques &amp; tips\n\nJust tell me what you are working on!'; 
+                else if (userMsg.indexOf('pay') !== -1 || userMsg.indexOf('money') !== -1 || userMsg.indexOf('earn') !== -1) 
+                    response = 'Here is how payments work on Brit Market:\n\n&#128181; Daily Chapters: N25,000 per 100 views/buys\n&#128218; Full Books: Price set by you, paid when bought\n&#128221; Ghostwriting: Negotiated per project with client\n&#128176; Blog Posts: Starting at N20,000 per post\n\nPayments process every 3 weeks. Add your account details in settings!'; 
+                else 
+                    response = 'That is an interesting question! As your AI assistant, I am here to help with writing, editing, and publishing. Could you tell me more about what you are working on? For example:\n\n&#8226; "Check my grammar"\n&#8226; "Suggest a cover design"\n&#8226; "Help with my plot"\n&#8226; "What genre should I write?"'; 
+                messages.innerHTML += '<div class="message received">' + response + '</div>'; 
+                messages.scrollTop = messages.scrollHeight; 
+            }, 1500); 
+            input.value = ''; 
+        }
+        
+        function handleAIKey(e) { 
+            if (e && e.key === 'Enter') sendAIMessage(); 
+        }
+        
+        function search() { 
+            var input = $('searchInput'); 
+            if (input && input.value.trim()) { 
+                showNotification('Searching for: ' + input.value); 
+                showStories(); 
+            } 
+        }
+        
+        function showStoryTab(tab, clickedEl) { 
+            document.querySelectorAll('#storyTabs .tab').forEach(function(t) { t.classList.remove('active'); }); 
+            if (clickedEl) clickedEl.classList.add('active'); 
+        }
+        
+        function escapeHtml(text) { 
+            var div = document.createElement('div'); 
+            div.textContent = text; 
+            return div.innerHTML; 
+        }
+
+        // ===== EVENT DELEGATION - THE KEY FIX =====
+        // This catches ALL clicks on the page and routes them properly
+        document.addEventListener('click', function(e) {
+            var el = e.target;
+            
+            // Walk up the DOM tree to find an element with data-action
+            while (el && el !== document.body && el !== document.documentElement) {
+                var action = el.getAttribute('data-action');
+                if (action) break;
+                el = el.parentElement;
+            }
+            
+            if (!el || !el.getAttribute) return;
+            var action = el.getAttribute('data-action');
+            if (!action) return;
+            
+            var arg = el.getAttribute('data-arg');
+            
+            switch(action) {
+                case 'toggleBlueMenu': toggleBlueMenu(); break;
+                case 'showHome': showHome(); break;
+                case 'showAdminLogin': showAdminLogin(); break;
+                case 'search': search(); break;
+                case 'showSignup': showSignup(); break;
+                case 'showLogin': showLogin(); break;
+                case 'showDashboard': showDashboard(); break;
+                case 'toggleChat': toggleChat(); break;
+                case 'toggleSubMenu': if (arg) toggleSubMenu(arg); break;
+                case 'showCourse': if (arg) showCourse(arg); break;
+                case 'showGhostwriting': showGhostwriting(); break;
+                case 'showContentPurchase': showContentPurchase(); break;
+                case 'showEngagement': showEngagement(); break;
+                case 'showAffiliateDashboard': showAffiliateDashboard(); break;
+                case 'showStories': showStories(); break;
+                case 'showWritingServices': showWritingServices(); break;
+                case 'showDashTab': if (arg) showDashTab(arg, el); break;
+                case 'selectGenre': selectGenre(el); break;
+                case 'publishStory': publishStory(); break;
+                case 'saveDraft': saveDraft(); break;
+                case 'nextTrainingDay': nextTrainingDay(); break;
+                case 'skipTraining': skipTraining(); break;
+                case 'aiReview': aiReview(); break;
+                case 'requestWithdrawal': requestWithdrawal(); break;
+                case 'saveAccountDetails': saveAccountDetails(); break;
+                case 'copyReferral': copyReferral(); break;
+                case 'openStory': if (arg) openStory(parseInt(arg)); break;
+                case 'closeStory': closeStory(); break;
+                case 'unlockChapter': unlockChapter(); break;
+                case 'showPayment': if (arg) showPayment(arg); break;
+                case 'submitReceipt': submitReceipt(); break;
+                case 'nextCourseStep': nextCourseStep(); break;
+                case 'prevCourseStep': prevCourseStep(); break;
+                case 'finishCourse': finishCourse(); break;
+                case 'selectPlatform': selectPlatform(el); break;
+                case 'showGhostTab': if (arg) showGhostTab(arg, el); break;
+                case 'showStoryTab': if (arg) showStoryTab(arg, el); break;
+                case 'closeModal': closeModal(); break;
+                case 'completeSignup': completeSignup(); break;
+                case 'showLoginForm': showLogin(); break;
+                case 'showSignupForm': showSignup(); break;
+                case 'closeAdminModal': closeAdminModal(); break;
+                case 'adminLogin': adminLogin(); break;
+                case 'sendMessage': sendMessage(); break;
+                case 'toggleAIChat': toggleAIChat(); break;
+                case 'sendAIMessage': sendAIMessage(); break;
+                case 'trigger-click': 
+                    var tid = el.getAttribute('data-target'); 
+                    if (tid) { var te = $(tid); if (te) te.click(); } 
+                    break;
+                case 'updateGenreOptions': updateGenreOptions(); break;
+                case 'logout': logout(); break;
+            }
+            
+            // Prevent default for all handled actions
+            e.preventDefault();
+            e.stopPropagation();
+        });
+        
+        // Enter key handlers for chat inputs
+        document.addEventListener('keypress', function(e) { 
+            if (e.key === 'Enter') { 
+                var t = e.target; 
+                if (t.id === 'chatInput') sendMessage(); 
+                else if (t.id === 'aiInput') sendAIMessage(); 
+            } 
+        });
+        
+        // Close blue menu when clicking outside
+        document.addEventListener('click', function(e) { 
+            var menu = $('blueMenu'), star = document.querySelector('.blue-star'); 
+            if (menu && star && !menu.contains(e.target) && !star.contains(e.target)) 
+                menu.classList.remove('active'); 
+        });
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() { 
+            showHome(); 
+            console.log('Brit Market initialized!'); 
+        });
+    })();
+    </script>
+</body>
+</html>
